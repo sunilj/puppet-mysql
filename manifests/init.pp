@@ -3,12 +3,13 @@
 # Examples
 #
 #   include mysql
-class mysql($port = 13306, $socket = false) {
+class mysql($port = 13306, $socket = false, $charset = latin1) {
   require homebrew
 
   class { 'mysql::config':
     override_port => $port,
-    override_socket => $socket
+    override_socket => $socket,
+    override_charset => $charset,
   }
 
   file { [

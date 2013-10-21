@@ -8,3 +8,6 @@ log-error=<%= scope.lookupvar "mysql::config::logerror" %>
 port=<%= scope.lookupvar "mysql::config::port" %>
 socket=<%= scope.lookupvar "mysql::config::socket" %>
 max_allowed_packet=1073741824
+
+[mysqld]
+collation-server=<%= scope.lookupvar "mysql::config::charset" %>
