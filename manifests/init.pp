@@ -47,7 +47,7 @@ class mysql($port = 13306, $socket = false, $charset = latin1) {
   }
 
   package { 'boxen/brews/mysql':
-    ensure => '5.5.20-boxen2',
+    ensure => '5.1.57-boxen2',
     notify => Service['dev.mysql']
   }
 
