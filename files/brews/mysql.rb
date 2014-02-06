@@ -27,6 +27,12 @@ class Mysql < Formula
     ]
   end
 
+  # Remove optimization flags from `mysql_config --cflags`
+  # This facilitates easy compilation of gems using a brewed mysql
+  # CMake patch needed for CMake 2.8.8.
+  # Reported here: http://bugs.mysql.com/bug.php?id=65050
+  def patches; DATA; end
+
   def install
     args = [".",
             "-DCMAKE_INSTALL_PREFIX=#{prefix}",
@@ -80,3 +86,35 @@ class Mysql < Formula
     ln_s "#{prefix}/support-files/mysql.server", bin
   end
 end
+
+__END__
+diff --git a/scripts/mysql_config.sh b/scripts/mysql_config.sh
+index 9296075..70c18db 100644
+--- a/scripts/mysql_config.sh
++++ b/scripts/mysql_config.sh
+@@ -137,7 +137,9 @@ for remove in DDBUG_OFF DSAFE_MUTEX DUNIV_MUST_NOT_INLINE DFORCE_INIT_OF_VARS \
+               DEXTRA_DEBUG DHAVE_purify O 'O[0-9]' 'xO[0-9]' 'W[-A-Za-z]*' \
+               'mtune=[-A-Za-z0-9]*' 'mcpu=[-A-Za-z0-9]*' 'march=[-A-Za-z0-9]*' \
+               Xa xstrconst "xc99=none" AC99 \
+-              unroll2 ip mp restrict
++              unroll2 ip mp restrict \
++              mmmx 'msse[0-9.]*' 'mfpmath=sse' w pipe 'fomit-frame-pointer' 'mmacosx-version-min=10.[0-9]' \
++              aes Os
+ do
+   # The first option we might strip will always have a space before it because
+   # we set -I$pkgincludedir as the first option
+diff --git a/configure.cmake b/configure.cmake
+index c3cc787..6193481 100644
+--- a/configure.cmake
++++ b/configure.cmake
+@@ -149,7 +149,9 @@ IF(UNIX)
+   SET(CMAKE_REQUIRED_LIBRARIES
+     ${LIBM} ${LIBNSL} ${LIBBIND} ${LIBCRYPT} ${LIBSOCKET} ${LIBDL} ${CMAKE_THREAD_LIBS_INIT} ${LIBRT})
+
+-  LIST(REMOVE_DUPLICATES CMAKE_REQUIRED_LIBRARIES)
++  IF(CMAKE_REQUIRED_LIBRARIES)
++    LIST(REMOVE_DUPLICATES CMAKE_REQUIRED_LIBRARIES)
++  ENDIF()
+   LINK_LIBRARIES(${CMAKE_THREAD_LIBS_INIT})
+
+   OPTION(WITH_LIBWRAP "Compile with tcp wrappers support" OFF)
