@@ -1,10 +1,10 @@
 require 'formula'
 
 class Mysql < Formula
-  homepage 'http://dev.mysql.com/doc/refman/5.5/en/'
-  url 'http://downloads.mysql.com/archives/mysql-5.5/mysql-5.5.20.tar.gz'
+  homepage 'http://dev.mysql.com/doc/refman/5.1/en/'
+  url 'http://downloads.mysql.com/archives/get/file/mysql-5.1.57-osx10.6-x86_64.tar.gz'
   sha1 'd5066327c41ac5a338ca0bb748e50bc4e1902442'
-  version '5.5.20-boxen2'
+  version '5.1.57-boxen2'
 
   depends_on 'cmake' => :build
   depends_on 'pidof'
