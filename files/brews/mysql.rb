@@ -2,8 +2,8 @@ require 'formula'
 
 class Mysql < Formula
   homepage 'http://dev.mysql.com/doc/refman/5.1/en/'
-  url 'http://downloads.mysql.com/archives/get/file/mysql-5.1.57-osx10.6-x86_64.tar.gz'
-  sha1 '0d2f210a3e36720d76ee35c8933ab3d02157d0db'
+  url 'http://downloads.mysql.com/archives/mysql-5.1/mysql-5.1.57.tar.gz'
+  sha1 'fcfe037ee6cfd53fe336ef12854e79481bdc6681'
   version '5.1.57-boxen2'
 
   depends_on 'cmake' => :build
